@@ -55,10 +55,6 @@ export async function getSchedule(): Promise<Schedule> {
   return response.json();
 }
 
-// https://esports-api.lolesports.com/persisted/gw/getLive?hl=en-US
-
-// https://feed.lolesports.com/livestats/v1/window/114256531619946030
-
 type Event = {
   id: string;
   startTime: string;
@@ -85,7 +81,28 @@ type Game = {
   }[];
 };
 
-export async function getLiveStats(): Promise<any> {
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+type ParticipantMetadata = {
+  participantId: number;
+  esportsPlayerId: string;
+  summonerName: string;
+  championId: string;
+  role: "top" | "jungle" | "mid" | "bottom" | "support";
+};
+
+type TeamMetadata = {
+  esportsTeamId: string;
+  participantMetadata: ParticipantMetadata[];
+};
+
+type GameMetadata = {
+  patchVersion: string;
+  blueTeamMetadata: TeamMetadata;
+  redTeamMetadata: TeamMetadata;
+};
+
+export async function getLiveDraft(): Promise<GameMetadata[]> {
   const gameData = await fetch(
     `https://esports-api.lolesports.com/persisted/gw/getLive?hl=en-US`,
     {
@@ -97,28 +114,18 @@ export async function getLiveStats(): Promise<any> {
 
   const liveEvents: Event[] = gameData.data.schedule.events;
 
-  const liveEventsInprogress = liveEvents.flatMap((event) => {
+  const liveGamesInProgress = liveEvents.flatMap((event) => {
     return event.match.games.filter((game) => game.state === "inProgress");
   });
 
-  console.log(liveEventsInprogress);
+  const fetches = liveGamesInProgress.map((liveGame) =>
+    fetch(`https://feed.lolesports.com/livestats/v1/window/${liveGame.id}`, {
+      headers: { "x-api-key": API_KEY },
+    })
+      .then((res) => (res.body ? res.json() : null))
+  );
 
-  for (const liveEvent of liveEventsInprogress) {
-    const yolo = await fetch(
-      `https://feed.lolesports.com/livestats/v1/window/${liveEvent.id}`,
-      {
-        headers: {
-          "x-api-key": API_KEY,
-        },
-      },
-    ).then((res) => {
-      if (res.body) {
-        return res.json();
-      }
+  const results = (await Promise.all(fetches)).filter(Boolean);
 
-      return null;
-    });
-
-    console.log(yolo);
-  }
+  return results as GameMetadata[];
 }

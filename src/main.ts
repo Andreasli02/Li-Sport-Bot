@@ -4,4 +4,6 @@ import * as EsportApi from "./lol-esports-api.ts";
 
 // response.data.schedule.events.forEach((event) => console.log(event));
 
-await EsportApi.getLiveStats();
+const yo = await EsportApi.getLiveDraft();
+
+console.log(yo);
