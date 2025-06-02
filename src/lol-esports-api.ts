@@ -118,14 +118,19 @@ export async function getLiveDraft(): Promise<GameMetadata[]> {
     return event.match.games.filter((game) => game.state === "inProgress");
   });
 
-  const fetches = liveGamesInProgress.map((liveGame) =>
-    fetch(`https://feed.lolesports.com/livestats/v1/window/${liveGame.id}`, {
-      headers: { "x-api-key": API_KEY },
-    })
-      .then((res) => (res.body ? res.json() : null))
-  );
+  const liveGameStats = (await Promise.all(
+    liveGamesInProgress.map((liveGame) =>
+      fetch(
+        `https://feed.lolesports.com/livestats/v1/window/${liveGame.id}`,
+        {
+          headers: { "x-api-key": API_KEY },
+        },
+      )
+        .then((res) => (res.body ? res.json() : null))
+    ),
+  )).filter(Boolean);
 
-  const results = (await Promise.all(fetches)).filter(Boolean);
-
-  return results as GameMetadata[];
+  return liveGameStats.map((liveGameStat) =>
+    liveGameStat.gameMetadata
+  ) as GameMetadata[];
 }
