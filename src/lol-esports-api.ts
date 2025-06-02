@@ -3,19 +3,6 @@ import "jsr:@std/dotenv/load";
 const API_KEY = Deno.env.get("API_KEY") ?? (() => {
   throw new Error("API_KEY variable not found");
 })();
-
-//export const ITEMS_URL = "https://ddragon.leagueoflegends.com/cdn/14.3.1/img/item/"
-// export const CHAMPIONS_URL = "https://ddragon.bangingheads.net/cdn/14.3.1/img/champion/"
-// const ITEMS_JSON_URL = `https://ddragon.leagueoflegends.com/cdn/14.3.1/data/en_US/item.json`
-
-// export const ITEMS_URL = "https://ddragon.bangingheads.net/cdn/PATCH_VERSION/img/item/"
-// export const CHAMPIONS_URL = "https://ddragon.leagueoflegends.com/cdn/PATCH_VERSION/img/champion/"
-// export const RUNES_JSON_URL = "https://ddragon.leagueoflegends.com/cdn/PATCH_VERSION/data/en_US/runesReforged.json"
-// export const ITEMS_JSON_URL = `https://ddragon.leagueoflegends.com/cdn/PATCH_VERSION/data/en_US/item.json`
-
-const API_URL_PERSISTED = "https://esports-api.lolesports.com/persisted/gw";
-const API_URL_LIVE = "https://feed.lolesports.com/livestats/v1";
-
 type Schedule = {
   data: {
     schedule: {
@@ -56,11 +43,82 @@ type Schedule = {
 };
 
 export async function getSchedule(): Promise<Schedule> {
-  const response = await fetch(`${API_URL_PERSISTED}/getSchedule?hl=en-US`, {
-    headers: {
-      "x-api-key": API_KEY,
+  const response = await fetch(
+    `https://esports-api.lolesports.com/persisted/gw/getSchedule?hl=en-US&leagueId=98767991314006698`,
+    {
+      headers: {
+        "x-api-key": API_KEY,
+      },
     },
-  });
+  );
 
   return response.json();
+}
+
+// https://esports-api.lolesports.com/persisted/gw/getLive?hl=en-US
+
+// https://feed.lolesports.com/livestats/v1/window/114256531619946030
+
+type Event = {
+  id: string;
+  startTime: string;
+  state: "inProgress" | "unstarted" | string;
+  match: Match;
+};
+
+type Match = {
+  id: string;
+  strategy: {
+    type: "bestOf" | string;
+    count: number;
+  };
+  games: Game[];
+};
+
+type Game = {
+  number: number;
+  id: string;
+  state: "inProgress" | "unstarted" | string;
+  teams: {
+    id: string;
+    side: "blue" | "red";
+  }[];
+};
+
+export async function getLiveStats(): Promise<any> {
+  const gameData = await fetch(
+    `https://esports-api.lolesports.com/persisted/gw/getLive?hl=en-US`,
+    {
+      headers: {
+        "x-api-key": API_KEY,
+      },
+    },
+  ).then((res) => res.json());
+
+  const liveEvents: Event[] = gameData.data.schedule.events;
+
+  const liveEventsInprogress = liveEvents.flatMap((event) => {
+    return event.match.games.filter((game) => game.state === "inProgress");
+  });
+
+  console.log(liveEventsInprogress);
+
+  for (const liveEvent of liveEventsInprogress) {
+    const yolo = await fetch(
+      `https://feed.lolesports.com/livestats/v1/window/${liveEvent.id}`,
+      {
+        headers: {
+          "x-api-key": API_KEY,
+        },
+      },
+    ).then((res) => {
+      if (res.body) {
+        return res.json();
+      }
+
+      return null;
+    });
+
+    console.log(yolo);
+  }
 }
