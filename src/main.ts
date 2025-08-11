@@ -1,4 +1,5 @@
 import * as EsportApi from "./lol-esports-api.ts";
+import * as Data from "./champion-data.ts";
 
 // const yo = await EsportApi.getSchedule();
 
@@ -54,7 +55,17 @@ const teamB = [
   { prioScore: 0.3, synergy: 0, countered: 0 },
 ];
 
-console.log(
-  "Team A win probability:",
-  predictWinProbability(teamA, teamB),
-);
+// console.log(
+//   "Team A win probability:",
+//   predictWinProbability(teamA, teamB),
+// );
+
+function parseWhitespaceTable(text: string) {
+  return text
+    .split("\n")
+    .map((row) => row.trim().split(/\s+/)); // split each row by whitespace into columns
+
+  // trimmedText.map()
+}
+
+console.log(parseWhitespaceTable(Data.championData));
