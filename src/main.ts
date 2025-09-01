@@ -1,13 +1,10 @@
 import * as EsportApi from "./lol-esports-api.ts";
-import * as Data from "./champion-data.ts";
 
 // const yo = await EsportApi.getSchedule();
 
 // response.data.schedule.events.forEach((event) => console.log(event));
 
-const yo = await EsportApi.getLiveDraft();
-
-console.log(yo);
+// console.log(await EsportApi.getLiveDraft());
 
 type Team = {
   prioScore: number; // Prioscore from https://gol.gg/champion/list/season-S15/split-Summer/tournament-ALL/
@@ -59,13 +56,3 @@ const teamB = [
 //   "Team A win probability:",
 //   predictWinProbability(teamA, teamB),
 // );
-
-function parseWhitespaceTable(text: string) {
-  return text
-    .split("\n")
-    .map((row) => row.trim().split(/\s+/)); // split each row by whitespace into columns
-
-  // trimmedText.map()
-}
-
-console.log(parseWhitespaceTable(Data.championData));
