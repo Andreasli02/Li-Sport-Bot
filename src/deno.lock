@@ -2,6 +2,7 @@
   "version": "5",
   "specifiers": {
     "jsr:@std/assert@1": "1.0.14",
+    "jsr:@std/dotenv@*": "0.225.3",
     "jsr:@std/internal@^1.0.10": "1.0.10",
     "npm:discord-interactions@4": "4.3.0",
     "npm:express@^5.1.0": "5.1.0"
@@ -12,6 +13,9 @@
       "dependencies": [
         "jsr:@std/internal"
       ]
+    },
+    "@std/dotenv@0.225.3": {
+      "integrity": "a95e5b812c27b0854c52acbae215856d9cce9d4bbf774d938c51d212711e8d4a"
     },
     "@std/internal@1.0.10": {
       "integrity": "e3be62ce42cab0e177c27698e5d9800122f67b766a0bea6ca4867886cbde8cf7"
@@ -412,6 +416,7 @@
   "workspace": {
     "dependencies": [
       "jsr:@std/assert@1",
+      "jsr:@std/dotenv@*",
       "npm:discord-interactions@4",
       "npm:express@^5.1.0"
     ]

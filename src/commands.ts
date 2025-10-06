@@ -1,4 +1,5 @@
-import "jsr:@std/dotenv/load";
+import "@std/dotenv/load";
+
 const DISCORD_TOKEN = Deno.env.get("DISCORD_TOKEN") ?? (() => {
   throw new Error("DISCORD_TOKEN variable not found");
 })();

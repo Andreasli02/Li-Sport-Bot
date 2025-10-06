@@ -1,8 +1,6 @@
 import * as EsportApi from "./lol-esports-api.ts";
 
-// const yo = await EsportApi.getSchedule();
-
-// response.data.schedule.events.forEach((event) => console.log(event));
+// console.log(await EsportApi.getSchedule());
 
 // console.log(await EsportApi.getLiveDraft());
 

@@ -1,4 +1,4 @@
-import "jsr:@std/dotenv/load";
+import "@std/dotenv/load";
 
 const API_KEY = Deno.env.get("API_KEY") ?? (() => {
   throw new Error("API_KEY variable not found");

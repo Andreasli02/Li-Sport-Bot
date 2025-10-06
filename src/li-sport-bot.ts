@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import {
   InteractionResponseFlags,
   InteractionResponseType,
@@ -6,7 +6,7 @@ import {
   MessageComponentTypes,
   verifyKeyMiddleware,
 } from "discord-interactions";
-import "jsr:@std/dotenv/load";
+import "@std/dotenv/load";
 
 const app = express();
 
@@ -17,7 +17,7 @@ const PUBLIC_KEY = Deno.env.get("PUBLIC_KEY") ?? (() => {
 app.post(
   "/interactions",
   verifyKeyMiddleware(PUBLIC_KEY),
-  (req: any, res: any) => {
+  (req: Request, res: Response) => {
     const { type, data } = req.body;
 
     if (type === InteractionType.PING) {
