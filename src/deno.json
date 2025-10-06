@@ -4,7 +4,7 @@
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@1",
-    "hono": "https://esm.sh/hono@4.6.5",
-    "discord-interactions": "npm:discord-interactions@4"
+    "discord-interactions": "npm:discord-interactions@4",
+    "express": "npm:express@^5.1.0"
   }
 }
