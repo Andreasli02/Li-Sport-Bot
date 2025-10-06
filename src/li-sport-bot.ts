@@ -35,7 +35,7 @@ app.post(
             components: [
               {
                 type: MessageComponentTypes.TEXT_DISPLAY,
-                content: `hello world`,
+                content: `hello world 2`,
               },
             ],
           },
