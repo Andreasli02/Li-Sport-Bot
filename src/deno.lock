@@ -2,7 +2,8 @@
   "version": "5",
   "specifiers": {
     "jsr:@std/dotenv@*": "0.225.3",
-    "npm:@types/node@*": "22.15.15"
+    "npm:@types/node@*": "22.15.15",
+    "npm:discord-interactions@4": "4.3.0"
   },
   "jsr": {
     "@std/dotenv@0.225.3": {
@@ -16,13 +17,33 @@
         "undici-types"
       ]
     },
+    "discord-interactions@4.3.0": {
+      "integrity": "sha512-qCJEnuQeIDIo26MPEqYlIiYokqwFAMoRsmEE0PgAuiTYNXIMB9Z40LmqlgYe0yBO+743+AOnfTQdUK1WLg8+pw=="
+    },
     "undici-types@6.21.0": {
       "integrity": "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ=="
     }
   },
+  "remote": {
+    "https://esm.sh/hono@4.6.5": "a45d71b01c37e93e2555d97d49aa0a96a42723489a89922a1ac52395c54c5059",
+    "https://esm.sh/hono@4.6.5/denonext/dist/compose.mjs": "11bd4feb51cf4cf7179acd8f56fcd9ba48a5dcdb3adf4d4df6f6cfe2e3ecd37b",
+    "https://esm.sh/hono@4.6.5/denonext/dist/context.mjs": "809ab57420b42f049cbb21a7568fb2df60b9c8a253047361e297718a0144e3a5",
+    "https://esm.sh/hono@4.6.5/denonext/dist/hono.mjs": "990c845ebf0aa8402935b129dc792263ddb2809de356a41ec179414766b4e9b5",
+    "https://esm.sh/hono@4.6.5/denonext/dist/request.mjs": "364848c87012127081f4996685f6aae56e37be52e1ec01cfef6ad8e2178fb98b",
+    "https://esm.sh/hono@4.6.5/denonext/dist/utils/body.mjs": "2cb147121f1626efcf903a03e175be4fd490b32e4000d5138ed6ea0f93586fdd",
+    "https://esm.sh/hono@4.6.5/denonext/dist/utils/html.mjs": "16a54023d8ec0c75a61135530f583476a6be15286774a34f831857bb43a9ba43",
+    "https://esm.sh/hono@4.6.5/denonext/dist/utils/url.mjs": "c7009ffe4981fdf6061191514dd92ed943c33b68890b160b886fadd0a8fd22dc",
+    "https://esm.sh/hono@4.6.5/denonext/hono-base.mjs": "8aba0d408fa75d58a896e2b1f1980cea4da9f647adec9d8c41f0aae7654762e5",
+    "https://esm.sh/hono@4.6.5/denonext/hono.mjs": "0c2432405a6fe59fb02d33f943aa5073364a8d7c167cbfb4e0a3e2c41b7d3b75",
+    "https://esm.sh/hono@4.6.5/denonext/router.mjs": "7e82212ca730a143395410b63ed66757ae840963e9905dd358934723b18f061c",
+    "https://esm.sh/hono@4.6.5/denonext/router/reg-exp-router.mjs": "27f5365d3b4f5386ae78d3560d0a87accc558d8e3b7e3902bb65f32b4ad9ae1f",
+    "https://esm.sh/hono@4.6.5/denonext/router/smart-router.mjs": "a221a933fda10e8ef58c4832da1723cf012c63ddf03d664780e58498be0bd1ba",
+    "https://esm.sh/hono@4.6.5/denonext/router/trie-router.mjs": "b5b48dfb79567e77a2b689ca660d065d001e258f038b87371162fa23debe77da"
+  },
   "workspace": {
     "dependencies": [
-      "jsr:@std/assert@1"
+      "jsr:@std/assert@1",
+      "npm:discord-interactions@4"
     ]
   }
 }
