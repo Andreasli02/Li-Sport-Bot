@@ -7,6 +7,7 @@ import {
   verifyKeyMiddleware,
 } from "discord-interactions";
 import "@std/dotenv/load";
+import * as EsportApi from "./lol-esports-api.ts";
 
 const app = express();
 
@@ -17,7 +18,7 @@ const PUBLIC_KEY = Deno.env.get("PUBLIC_KEY") ?? (() => {
 app.post(
   "/interactions",
   verifyKeyMiddleware(PUBLIC_KEY),
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const { type, data } = req.body;
 
     if (type === InteractionType.PING) {
@@ -35,7 +36,38 @@ app.post(
             components: [
               {
                 type: MessageComponentTypes.TEXT_DISPLAY,
-                content: `hello world 2`,
+                content: `hello world`,
+              },
+            ],
+          },
+        });
+      }
+
+      if (name === "schedule") {
+        const schedule = await EsportApi.getSchedule();
+        const events = schedule.data.schedule.events.slice(0, 5);
+
+        const content = events
+          .map((e) => {
+            const [team1, team2] = e.match.teams;
+            const start = new Date(e.startTime).toLocaleString("en-US", {
+              dateStyle: "medium",
+              timeStyle: "short",
+            });
+            return `**${team1.name}** vs **${team2.name}** (${e.league.name})\n🕒 ${start}\n`;
+          })
+          .join("\n");
+
+        console.log(content);
+
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            flags: InteractionResponseFlags.IS_COMPONENTS_V2,
+            components: [
+              {
+                type: MessageComponentTypes.TEXT_DISPLAY,
+                content: `${content}`,
               },
             ],
           },

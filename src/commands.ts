@@ -10,7 +10,7 @@ const GUILD_ID = Deno.env.get("GUILD_ID") ?? (() => {
   throw new Error("GUILD_ID variable not found");
 })();
 
-await fetch(
+const res = await fetch(
   `https://discord.com/api/v10/applications/${APP_ID}/guilds/${GUILD_ID}/commands`,
   {
     method: "PUT",
@@ -21,8 +21,14 @@ await fetch(
     body: JSON.stringify([
       {
         name: "test",
-        description: "Test command",
+        description: "testing",
+      },
+      {
+        name: "schedule",
+        description: "Recent and upcoming matches",
       },
     ]),
   },
-).then(console.log);
+);
+
+console.log(res.status, await res.text());
