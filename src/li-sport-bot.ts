@@ -45,20 +45,22 @@ app.post(
 
       if (name === "schedule") {
         const schedule = await EsportApi.getSchedule();
-        const events = schedule.data.schedule.events.slice(0, 5);
+        const events = schedule.data.schedule.events
+          .filter((event) => {
+            return event.state !== "completed";
+          })
+          .slice(0, 5);
 
         const content = events
-          .map((e) => {
-            const [team1, team2] = e.match.teams;
-            const start = new Date(e.startTime).toLocaleString("en-US", {
+          .map((event) => {
+            const [team1, team2] = event.match.teams;
+            const start = new Date(event.startTime).toLocaleString("en-US", {
               dateStyle: "medium",
               timeStyle: "short",
             });
-            return `**${team1.name}** vs **${team2.name}** (${e.league.name})\n🕒 ${start}\n`;
+            return `**${team1.name}** vs **${team2.name}** (${event.league.name})\n${start}\n`;
           })
           .join("\n");
-
-        console.log(content);
 
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
