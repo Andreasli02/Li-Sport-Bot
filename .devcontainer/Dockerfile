@@ -17,7 +17,7 @@ RUN apt-get update && \
     apt-get install -y git openssh-server && \
     rm -rf /var/lib/apt/lists/*
 
-# Production image for Argo
+# Production image for notzure
 FROM base AS production
 
 # Copy application files
