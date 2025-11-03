@@ -2,4 +2,4 @@
 
 ## Commands
 
-``` deno run -A .\src\main.ts ```
+`deno task start`

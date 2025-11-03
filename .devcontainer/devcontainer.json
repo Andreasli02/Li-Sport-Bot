@@ -1,0 +1,17 @@
+{
+    "name": "li-sport-bot",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-azuretools.vscode-docker",
+                "yoavbls.pretty-ts-errors",
+                "eamodio.gitlens",
+                "GitHub.vscode-github-actions",
+                "denoland.vscode-deno"
+            ]
+        }
+    },
+    "build": { "dockerfile": "Dockerfile" },
+    "forwardPorts": [8999]
+    // "postCreateCommand": "read -p 'Enter your git email: ' email && git config --global user.email \"$email\" && read -p 'Enter your git username: ' username && git config --global user.name \"$username\""
+}

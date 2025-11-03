@@ -21,7 +21,7 @@ import { readFileSync } from "node:fs";
 //   XPDifferentialAt15: string;
 // };
 
-const csvText = readFileSync("./src/league.csv", "utf8");
+const csvText = readFileSync("./src/statistics/league.csv", "utf8");
 const rows = csvText.split("\n");
 
 const headers = rows[0].split(",");
@@ -35,4 +35,4 @@ const values = rows.slice(1).map((a) => {
   return object;
 });
 
-console.log(values);
+console.log(values[0]);
