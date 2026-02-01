@@ -27,6 +27,10 @@ const res = await fetch(
         name: "schedule",
         description: "Recent and upcoming matches",
       },
+      {
+        name: "predict",
+        description: "Predict winner of live games based on champion statistics",
+      },
     ]),
   },
 );

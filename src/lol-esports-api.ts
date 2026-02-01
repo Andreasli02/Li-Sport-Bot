@@ -81,7 +81,7 @@ type Game = {
   }[];
 };
 
-type ParticipantMetadata = {
+export type ParticipantMetadata = {
   participantId: number;
   esportsPlayerId: string;
   summonerName: string;
@@ -89,12 +89,12 @@ type ParticipantMetadata = {
   role: "top" | "jungle" | "mid" | "bottom" | "support";
 };
 
-type TeamMetadata = {
+export type TeamMetadata = {
   esportsTeamId: string;
   participantMetadata: ParticipantMetadata[];
 };
 
-type GameMetadata = {
+export type GameMetadata = {
   patchVersion: string;
   blueTeamMetadata: TeamMetadata;
   redTeamMetadata: TeamMetadata;

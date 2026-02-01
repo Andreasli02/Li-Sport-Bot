@@ -8,6 +8,7 @@ import {
 } from "discord-interactions";
 import "@std/dotenv/load";
 import * as EsportApi from "./lol-esports-api.ts";
+import * as LeaguepediaApi from "./leaguepedia-api.ts";
 
 const app = express();
 
@@ -74,6 +75,128 @@ app.post(
             ],
           },
         });
+      }
+
+      if (name === "predict") {
+        try {
+          // Get live game drafts
+          const liveGames = await EsportApi.getLiveDraft();
+
+          if (liveGames.length === 0) {
+            return res.send({
+              type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+              data: {
+                flags: InteractionResponseFlags.IS_COMPONENTS_V2,
+                components: [
+                  {
+                    type: MessageComponentTypes.TEXT_DISPLAY,
+                    content: "No live games currently in progress.",
+                  },
+                ],
+              },
+            });
+          }
+
+          // Fetch champion stats from Leaguepedia
+          const championStats = await LeaguepediaApi.getChampionStats();
+
+          const predictions = liveGames.map((game) => {
+            const blueTeam = game.blueTeamMetadata;
+            const redTeam = game.redTeamMetadata;
+
+            // Check if draft is complete (all 5 champions picked)
+            if (
+              blueTeam.participantMetadata.length < 5 ||
+              redTeam.participantMetadata.length < 5
+            ) {
+              return "Draft in progress - prediction unavailable";
+            }
+
+            // Calculate win rates for each team
+            const blueWinRates = blueTeam.participantMetadata.map((p) => ({
+              champion: p.championId,
+              winRate: LeaguepediaApi.getChampionWinrate(
+                championStats,
+                p.championId,
+              ),
+            }));
+
+            const redWinRates = redTeam.participantMetadata.map((p) => ({
+              champion: p.championId,
+              winRate: LeaguepediaApi.getChampionWinrate(
+                championStats,
+                p.championId,
+              ),
+            }));
+
+            // Calculate team averages
+            const blueAvg =
+              blueWinRates.reduce((sum, c) => sum + c.winRate, 0) /
+              blueWinRates.length;
+            const redAvg =
+              redWinRates.reduce((sum, c) => sum + c.winRate, 0) /
+              redWinRates.length;
+
+            // Normalize to probability
+            const blueProb = blueAvg / (blueAvg + redAvg);
+            const redProb = redAvg / (blueAvg + redAvg);
+
+            const predictedWinner = blueProb >= redProb ? "Blue Side" : "Red Side";
+
+            // Format output
+            const blueChampions = blueWinRates
+              .map(
+                (c) =>
+                  `${c.champion} (${LeaguepediaApi.formatWinRate(c.winRate)})`,
+              )
+              .join(", ");
+
+            const redChampions = redWinRates
+              .map(
+                (c) =>
+                  `${c.champion} (${LeaguepediaApi.formatWinRate(c.winRate)})`,
+              )
+              .join(", ");
+
+            return `**Prediction: ${predictedWinner}** (${(blueProb * 100).toFixed(1)}% vs ${(redProb * 100).toFixed(1)}%)
+
+**Blue Team** (Avg: ${(blueAvg * 100).toFixed(1)}%)
+${blueChampions}
+
+**Red Team** (Avg: ${(redAvg * 100).toFixed(1)}%)
+${redChampions}
+
+_Based on 2025-2026 pro play statistics from Leaguepedia_`;
+          });
+
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              flags: InteractionResponseFlags.IS_COMPONENTS_V2,
+              components: [
+                {
+                  type: MessageComponentTypes.TEXT_DISPLAY,
+                  content: predictions.join("\n\n---\n\n"),
+                },
+              ],
+            },
+          });
+        } catch (error) {
+          console.error("Predict command error:", error);
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              flags: InteractionResponseFlags.IS_COMPONENTS_V2,
+              components: [
+                {
+                  type: MessageComponentTypes.TEXT_DISPLAY,
+                  content:
+                    "An error occurred while fetching prediction data. Please try again later.",
+                },
+              ],
+            },
+          });
+        }
       }
     }
   },
