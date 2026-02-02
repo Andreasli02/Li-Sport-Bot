@@ -29,21 +29,6 @@ app.post(
     if (type === InteractionType.APPLICATION_COMMAND) {
       const { name } = data;
 
-      if (name === "test") {
-        return res.send({
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            flags: InteractionResponseFlags.IS_COMPONENTS_V2,
-            components: [
-              {
-                type: MessageComponentTypes.TEXT_DISPLAY,
-                content: `hello world`,
-              },
-            ],
-          },
-        });
-      }
-
       if (name === "schedule") {
         const schedule = await EsportApi.getSchedule();
         const events = schedule.data.schedule.events
