@@ -132,32 +132,3 @@ export async function getLiveDraft(): Promise<GameMetadata[]> {
     liveGameStat.gameMetadata
   ) as GameMetadata[];
 }
-
-// https://gol.gg/champion/list/season-S15/split-Summer/tournament-ALL/
-
-// export async function getSchedule(): Promise<Schedule> {
-//   const response = await fetch(
-//     `https://esports-api.lolesports.com/persisted/gw/getSchedule?hl=en-US`,
-//     {
-//       headers: {
-//         "x-api-key": API_KEY,
-//       },
-//     },
-//   );
-
-//   return response.json();
-// }
-
-export async function test(): Promise<Schedule> {
-  const response = await fetch(
-    `https://api.lolesports.com/api/v1/teams`,
-    {
-      headers: {
-        "x-api-key": API_KEY,
-        slug: "GEN",
-      },
-    },
-  );
-
-  return response.json();
-}
