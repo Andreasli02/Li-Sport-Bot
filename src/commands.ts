@@ -20,10 +20,6 @@ const res = await fetch(
     },
     body: JSON.stringify([
       {
-        name: "test",
-        description: "testing",
-      },
-      {
         name: "schedule",
         description: "Recent and upcoming matches",
       },
