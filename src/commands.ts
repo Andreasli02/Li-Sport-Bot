@@ -29,7 +29,8 @@ const res = await fetch(
       },
       {
         name: "predict",
-        description: "Predict winner of live games based on champion statistics",
+        description:
+          "Predict winner of live games based on champion statistics",
       },
     ]),
   },

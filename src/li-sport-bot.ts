@@ -193,5 +193,5 @@ app.post(
 );
 
 app.listen(8999, () => {
-  console.log("Example app listening at http://localhost:8999");
+  console.log("http://localhost:8999");
 });
